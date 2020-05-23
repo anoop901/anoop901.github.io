@@ -79713,6 +79713,25 @@ var _default = (0, _createSvgIcon.default)(_react.default.createElement("path", 
 }), 'Delete');
 
 exports.default = _default;
+},{"@babel/runtime/helpers/interopRequireDefault":"node_modules/@babel/runtime/helpers/interopRequireDefault.js","react":"node_modules/react/index.js","./utils/createSvgIcon":"node_modules/@material-ui/icons/utils/createSvgIcon.js"}],"node_modules/@material-ui/icons/Add.js":[function(require,module,exports) {
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _createSvgIcon = _interopRequireDefault(require("./utils/createSvgIcon"));
+
+var _default = (0, _createSvgIcon.default)(_react.default.createElement("path", {
+  d: "M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"
+}), 'Add');
+
+exports.default = _default;
 },{"@babel/runtime/helpers/interopRequireDefault":"node_modules/@babel/runtime/helpers/interopRequireDefault.js","react":"node_modules/react/index.js","./utils/createSvgIcon":"node_modules/@material-ui/icons/utils/createSvgIcon.js"}],"node_modules/immutable/dist/immutable.es.js":[function(require,module,exports) {
 "use strict";
 
@@ -85554,6 +85573,8 @@ var core_1 = require("@material-ui/core");
 
 var Delete_1 = __importDefault(require("@material-ui/icons/Delete"));
 
+var Add_1 = __importDefault(require("@material-ui/icons/Add"));
+
 var immutable_1 = require("immutable");
 
 function MandalaSettings(props) {
@@ -85568,29 +85589,24 @@ function MandalaSettings(props) {
     spacing: 2
   }, React.createElement(core_1.Grid, {
     item: true
-  }, React.createElement(core_1.Paper, null, React.createElement(core_1.List, null, props.mandala.layers.map(function (layer, i) {
-    return React.createElement(core_1.ListItem, {
+  }, React.createElement(core_1.Grid, {
+    container: true
+  }, React.createElement(core_1.Grid, {
+    item: true
+  }, React.createElement(core_1.FormControl, null, React.createElement(core_1.InputLabel, null, "Layer"), React.createElement(core_1.Select, {
+    value: currentLayerIdx
+  }, props.mandala.layers.map(function (layer, i) {
+    return React.createElement(core_1.MenuItem, {
       key: i,
       button: true,
-      selected: i === currentLayerIdx,
+      value: i,
       onClick: function onClick() {
         setCurrentLayerIdx(i);
       }
-    }, React.createElement(core_1.ListItemText, null, "Layer #", i + 1), React.createElement(core_1.ListItemSecondaryAction, null, React.createElement(core_1.IconButton, {
-      edge: "end",
-      disabled: props.mandala.layers.size == 1,
-      onClick: function onClick() {
-        if (currentLayerIdx == props.mandala.layers.size - 1) {
-          setCurrentLayerIdx(props.mandala.layers.size - 2);
-        }
-
-        props.setMandala(immutable_1.removeIn(props.mandala, ["layers", i]));
-      }
-    }, React.createElement(Delete_1.default, null))));
+    }, "Layer #", i + 1);
   })))), React.createElement(core_1.Grid, {
     item: true
-  }, React.createElement(core_1.Button, {
-    variant: "contained",
+  }, React.createElement(core_1.IconButton, {
     onClick: function onClick() {
       props.setMandala(immutable_1.update(props.mandala, "layers", function (prevLayers) {
         return prevLayers.push({
@@ -85603,7 +85619,21 @@ function MandalaSettings(props) {
       }));
       setCurrentLayerIdx(props.mandala.layers.size);
     }
-  }, "Add layer")), React.createElement(core_1.Grid, {
+  }, React.createElement(Add_1.default, null))), React.createElement(core_1.Grid, {
+    item: true
+  }, React.createElement(core_1.IconButton, {
+    edge: "end",
+    disabled: props.mandala.layers.size == 1,
+    onClick: function onClick() {
+      if (currentLayerIdx == props.mandala.layers.size - 1) {
+        setCurrentLayerIdx(props.mandala.layers.size - 2);
+      }
+
+      props.setMandala(immutable_1.removeIn(props.mandala, ["layers", currentLayerIdx]));
+    }
+  }, React.createElement(Delete_1.default, null))))), React.createElement(core_1.Grid, {
+    item: true
+  }), React.createElement(core_1.Grid, {
     item: true
   }, React.createElement(core_1.InputLabel, null, "Distance to center"), React.createElement(core_1.Slider, {
     value: props.mandala.layers.get(currentLayerIdx).distanceFromCenter,
@@ -85662,7 +85692,7 @@ function MandalaSettings(props) {
 }
 
 exports.default = MandalaSettings;
-},{"react":"node_modules/react/index.js","@material-ui/core":"node_modules/@material-ui/core/esm/index.js","@material-ui/icons/Delete":"node_modules/@material-ui/icons/Delete.js","immutable":"node_modules/immutable/dist/immutable.es.js"}],"App.tsx":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","@material-ui/core":"node_modules/@material-ui/core/esm/index.js","@material-ui/icons/Delete":"node_modules/@material-ui/icons/Delete.js","@material-ui/icons/Add":"node_modules/@material-ui/icons/Add.js","immutable":"node_modules/immutable/dist/immutable.es.js"}],"App.tsx":[function(require,module,exports) {
 "use strict";
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
@@ -85861,7 +85891,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52172" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56630" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
