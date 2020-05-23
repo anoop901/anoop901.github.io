@@ -85511,6 +85511,8 @@ exports.default = _default;
 },{}],"MandalaSettings.tsx":[function(require,module,exports) {
 "use strict";
 
+function _createForOfIteratorHelper(o) { if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (o = _unsupportedIterableToArray(o))) { var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e2) { throw _e2; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var it, normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e3) { didErr = true; err = _e3; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -85608,14 +85610,17 @@ function MandalaSettings(props) {
     item: true
   }, React.createElement(core_1.IconButton, {
     onClick: function onClick() {
+      var outermostLayer = getOutermostLayer(props.mandala);
+      var newLayer = {
+        numberOfCircles: outermostLayer.numberOfCircles,
+        distanceFromCenter: Math.floor(outermostLayer.distanceFromCenter * 0.9 + 500 * 0.1),
+        radius: Math.ceil(outermostLayer.radius * 0.9),
+        phase: (outermostLayer.phase + 0.5) % 1.0,
+        color: "hsl(".concat(props.mandala.layers.size * 60, ",100%,50%)")
+      };
+      console.log(newLayer);
       props.setMandala(immutable_1.update(props.mandala, "layers", function (prevLayers) {
-        return prevLayers.push({
-          color: "red",
-          distanceFromCenter: 107,
-          numberOfCircles: 12,
-          radius: 25,
-          phase: 0
-        });
+        return prevLayers.push(newLayer);
       }));
       setCurrentLayerIdx(props.mandala.layers.size);
     }
@@ -85664,7 +85669,7 @@ function MandalaSettings(props) {
       var newValue = newValueOrList;
       props.setMandala(immutable_1.setIn(props.mandala, ["layers", currentLayerIdx, "radius"], newValue));
     },
-    min: 0,
+    min: 1,
     max: 100,
     valueLabelDisplay: "auto"
   })), React.createElement(core_1.Grid, {
@@ -85692,6 +85697,29 @@ function MandalaSettings(props) {
 }
 
 exports.default = MandalaSettings;
+
+function getOutermostLayer(mandala) {
+  var outermostLayer = mandala.layers.get(0);
+
+  var _iterator = _createForOfIteratorHelper(mandala.layers),
+      _step;
+
+  try {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var layer = _step.value;
+
+      if (layer.distanceFromCenter > outermostLayer.distanceFromCenter) {
+        outermostLayer = layer;
+      }
+    }
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+
+  return outermostLayer;
+}
 },{"react":"node_modules/react/index.js","@material-ui/core":"node_modules/@material-ui/core/esm/index.js","@material-ui/icons/Delete":"node_modules/@material-ui/icons/Delete.js","@material-ui/icons/Add":"node_modules/@material-ui/icons/Add.js","immutable":"node_modules/immutable/dist/immutable.es.js"}],"App.tsx":[function(require,module,exports) {
 "use strict";
 
@@ -85891,7 +85919,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56630" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57541" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
